@@ -1,0 +1,2 @@
+# NotMediocreEditz
+A portfolio website
