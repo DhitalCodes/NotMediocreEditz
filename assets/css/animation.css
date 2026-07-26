@@ -1,0 +1,36 @@
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-card {
+    animation: floatIn 600ms ease both;
+}
+
+.reveal-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 550ms ease, transform 550ms ease;
+    transition-delay: var(--delay, 0ms);
+}
+
+.reveal-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-card,
+    .reveal-up {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
