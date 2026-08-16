@@ -1,23 +1,29 @@
+/* =========================================================
+   ANIMATIONS — Mathematical Easing & Timing
+   Based on: Custom cubic-bezier curves for premium feel
+   ========================================================= */
+
+/* Float In — Hero card entrance */
 @keyframes floatIn {
     from {
         opacity: 0;
-        transform: translateY(18px);
+        transform: translateY(24px) scale(0.98);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-.hero-card {
-    animation: floatIn 600ms ease both;
-}
-
+/* Reveal Up — Scroll-triggered reveals */
 .reveal-up {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 550ms ease, transform 550ms ease;
+    transform: translateY(30px);
+    transition: 
+        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--delay, 0ms);
+    will-change: opacity, transform;
 }
 
 .reveal-up.in-view {
@@ -25,6 +31,105 @@
     transform: translateY(0);
 }
 
+/* Stagger children with mathematical delay */
+.reveal-up:nth-child(1) { --delay: 0ms; }
+.reveal-up:nth-child(2) { --delay: 80ms; }
+.reveal-up:nth-child(3) { --delay: 160ms; }
+.reveal-up:nth-child(4) { --delay: 240ms; }
+.reveal-up:nth-child(5) { --delay: 320ms; }
+.reveal-up:nth-child(6) { --delay: 400ms; }
+
+/* Hero card specific */
+.hero-card {
+    animation: floatIn 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 200ms;
+}
+
+/* Scale In — For modal content */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Fade In — Subtle opacity */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Slide In Left — For asymmetric layouts */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide In Right — For asymmetric layouts */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Glow Pulse — Subtle ambient animation */
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Line Expand — For decorative lines */
+@keyframes lineExpand {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+/* Counter Animation — For stats */
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Shimmer — For loading states or highlights */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     .hero-card,
     .reveal-up {
