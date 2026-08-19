@@ -227,39 +227,6 @@
         });
     });
 
-    // ===== Brand Logo Fallback =====
-    const brandLogo = document.getElementById("brandLogo");
-    const brandTextWrap = document.getElementById("brandTextWrap");
-
-    if (brandLogo && brandTextWrap) {
-        brandLogo.addEventListener("error", function () {
-            brandLogo.classList.add("is-hidden");
-            brandTextWrap.classList.remove("is-hidden");
-        });
-
-        brandLogo.addEventListener("load", function () {
-            brandTextWrap.classList.add("is-hidden");
-        });
-    }
-
-    // ===== Resume Download Check =====
-    const resumeDownload = document.getElementById("resumeDownload");
-    const resumeHint = document.getElementById("resumeHint");
-
-    if (resumeDownload && resumeHint) {
-        const resumeUrl = resumeDownload.getAttribute("href");
-        if (resumeUrl && window.location.protocol.indexOf("http") === 0) {
-            fetch(resumeUrl, { method: "HEAD" })
-                .then(function (response) {
-                    if (!response.ok) throw new Error("Resume missing");
-                })
-                .catch(function () {
-                    resumeDownload.classList.add("is-hidden");
-                    resumeHint.textContent = "Resume download will be enabled after assets/documents/resume.pdf is added.";
-                });
-        }
-    }
-
     // ===== Dynamic Year =====
     const yearNode = document.getElementById("year");
     if (yearNode) {
@@ -288,29 +255,96 @@
         });
     });
 
-    // ===== Parallax Effect for Hero Card =====
-    const heroCard = document.querySelector(".hero-card");
-    if (heroCard && window.matchMedia("(min-width: 900px)").matches) {
-        let mouseX = 0, mouseY = 0;
-        let currentX = 0, currentY = 0;
+    // ===== Scroll Parallax Layers =====
+    const parallaxLayers = Array.from(document.querySelectorAll(".parallax-layer"));
+    const allowMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        document.addEventListener("mousemove", function (e) {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
+    if (parallaxLayers.length > 0 && allowMotion) {
+        let tickingParallax = false;
 
-        function animateParallax() {
-            currentX += (mouseX - currentX) * 0.05;
-            currentY += (mouseY - currentY) * 0.05;
+        function updateParallaxLayers() {
+            const scrollY = window.scrollY;
 
-            const rotateX = currentY * -3;
-            const rotateY = currentX * 3;
+            parallaxLayers.forEach(function (layer) {
+                const speed = Number(layer.getAttribute("data-speed")) || 0.08;
+                layer.style.transform = "translate3d(0, " + (scrollY * speed) + "px, 0)";
+            });
 
-            heroCard.style.transform = "perspective(1000px) rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
-
-            requestAnimationFrame(animateParallax);
+            tickingParallax = false;
         }
 
-        animateParallax();
+        window.addEventListener("scroll", function () {
+            if (!tickingParallax) {
+                requestAnimationFrame(updateParallaxLayers);
+                tickingParallax = true;
+            }
+        });
+
+        updateParallaxLayers();
+    }
+
+    // ===== Parallax Effect for Hero Card =====
+    // Writes two CSS custom properties (`--tilt-x`, `--tilt-y`) so the card's
+    // final transform is composed by CSS. This keeps the existing :hover
+    // lift and the IO-driven reveal animation working alongside the tilt
+    // without one overwriting the other. Pauses when offscreen or when the
+    // user hasn't moved the mouse in a while.
+    const heroCard = document.querySelector(".hero-card");
+    if (heroCard && window.matchMedia("(min-width: 900px)").matches && allowMotion) {
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        let lastMoveAt = 0;
+        let rafId = null;
+        let visible = false;
+
+        const TILT_MAX_DEG = 3;
+        const IDLE_MS = 2500;
+
+        document.addEventListener("mousemove", function (e) {
+            targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+            targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+            lastMoveAt = Date.now();
+        });
+
+        function tick() {
+            currentX += (targetX - currentX) * 0.05;
+            currentY += (targetY - currentY) * 0.05;
+
+            heroCard.style.setProperty("--tilt-x", (currentY * -TILT_MAX_DEG) + "deg");
+            heroCard.style.setProperty("--tilt-y", (currentX * TILT_MAX_DEG) + "deg");
+
+            // Pause the rAF loop when nothing is changing AND the card is offscreen
+            // OR the user has been idle for a moment.
+            const idle = (Date.now() - lastMoveAt) > IDLE_MS;
+            const settled = Math.abs(targetX - currentX) < 0.001 && Math.abs(targetY - currentY) < 0.001;
+            if ((idle || !visible) && settled) {
+                rafId = null;
+                return;
+            }
+
+            rafId = requestAnimationFrame(tick);
+        }
+
+        function ensureRunning() {
+            if (rafId === null) {
+                lastMoveAt = Date.now();
+                rafId = requestAnimationFrame(tick);
+            }
+        }
+
+        if ("IntersectionObserver" in window) {
+            const heroObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    visible = entry.isIntersecting;
+                    if (visible) ensureRunning();
+                });
+            }, { threshold: 0.1 });
+            heroObserver.observe(heroCard);
+        } else {
+            visible = true;
+            ensureRunning();
+        }
     }
 })();

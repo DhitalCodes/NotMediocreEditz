@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self'; manifest-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self'; form-action 'self' https://forms.un-static.com; manifest-src 'self';">
 
     <title>Not Mediocre Editz | Video Editor Portfolio</title>
     <meta name="description" content="Professional video editing portfolio by Aaditya Dhital specializing in storytelling, long-form content, short-form content, YouTube videos, reels, and content repurposing.">
@@ -33,13 +33,22 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700;800&family=Playfair+Display:wght@700;800&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Playfair+Display:wght@700;800&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/animation.css">
-<base target="_blank">
 </head>
 <body id="top">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+            <symbol id="i-youtube" viewBox="0 0 24 24"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></symbol>
+            <symbol id="i-zoom" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 22l2-2zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14zm-1-7h2v2h2v2h-2v2h-2v-2h-2V9h2z"/></symbol>
+        </defs>
+    </svg>
+
     <!-- Fixed Header -->
     <header class="site-header">
         <nav class="nav container" aria-label="Main navigation">
@@ -64,10 +73,12 @@
         </nav>
     </header>
 
-    <main>
+    <main id="main">
         <!-- Hero Section -->
         <section class="hero section-pad">
             <div class="hero-decoration" aria-hidden="true"></div>
+            <div class="hero-orb hero-orb-a parallax-layer" data-speed="0.08" aria-hidden="true"></div>
+            <div class="hero-orb hero-orb-b parallax-layer" data-speed="0.14" aria-hidden="true"></div>
             <div class="container hero-grid">
                 <div class="hero-copy reveal-up">
                     <p class="eyebrow">Aaditya Dhital — Video Editor</p>
@@ -84,7 +95,7 @@
                 </div>
 
                 <div class="hero-card reveal-up" style="--delay: 120ms;">
-                    <img src="assets/images/pp.jpeg" alt="Aaditya Dhital profile image" loading="lazy">
+                    <img src="assets/images/pp.jpeg" alt="Aaditya Dhital profile image" width="380" height="507" fetchpriority="high">
                 </div>
             </div>
         </section>
@@ -106,14 +117,14 @@
                 <div class="portfolio-grid" id="portfolioGrid">
                     <!-- Motion Graphics -->
                     <article class="portfolio-card portfolio-card-video reveal-up" data-category="motiongraphics" data-type="video" data-video="jebYdFeSxSQ" data-youtube-url="https://www.youtube.com/watch?v=jebYdFeSxSQ">
-                        <img src="https://i.ytimg.com/vi/jebYdFeSxSQ/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/jebYdFeSxSQ/hqdefault.jpg" alt="Motion graphics project 1" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/jebYdFeSxSQ/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/jebYdFeSxSQ/hqdefault.jpg" alt="Motion graphics project 1" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Play motion graphics project 1"></button>
                         <div class="card-media-actions">
                             <button class="portfolio-media-btn" type="button" data-action="play" aria-label="Play video">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
                             </button>
                             <a class="portfolio-media-btn" href="https://www.youtube.com/watch?v=jebYdFeSxSQ" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-youtube"/></svg>
                             </a>
                         </div>
                         <div class="card-info">
@@ -122,14 +133,14 @@
                     </article>
 
                     <article class="portfolio-card portfolio-card-video reveal-up" data-category="motiongraphics" data-type="video" data-video="4RorN-CI4AE" data-youtube-url="https://www.youtube.com/watch?v=4RorN-CI4AE" style="--delay: 80ms;">
-                        <img src="https://i.ytimg.com/vi/4RorN-CI4AE/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/4RorN-CI4AE/hqdefault.jpg" alt="Motion graphics project 2" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/4RorN-CI4AE/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/4RorN-CI4AE/hqdefault.jpg" alt="Motion graphics project 2" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Play motion graphics project 2"></button>
                         <div class="card-media-actions">
                             <button class="portfolio-media-btn" type="button" data-action="play" aria-label="Play video">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
                             </button>
                             <a class="portfolio-media-btn" href="https://www.youtube.com/watch?v=4RorN-CI4AE" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-youtube"/></svg>
                             </a>
                         </div>
                         <div class="card-info">
@@ -139,14 +150,14 @@
 
                     <!-- Long Form -->
                     <article class="portfolio-card portfolio-card-video reveal-up" data-category="longform" data-type="video" data-video="QNMxsbK3Vsw" data-youtube-url="https://www.youtube.com/watch?v=QNMxsbK3Vsw" style="--delay: 160ms;">
-                        <img src="https://i.ytimg.com/vi/QNMxsbK3Vsw/hqdefault.jpg" alt="Long form editing project 1" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/QNMxsbK3Vsw/hqdefault.jpg" alt="Long form editing project 1" loading="lazy" width="480" height="360">
                         <button class="card-hitbox" type="button" aria-label="Play long form project 1"></button>
                         <div class="card-media-actions">
                             <button class="portfolio-media-btn" type="button" data-action="play" aria-label="Play video">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
                             </button>
                             <a class="portfolio-media-btn" href="https://www.youtube.com/watch?v=QNMxsbK3Vsw" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-youtube"/></svg>
                             </a>
                         </div>
                         <div class="card-info">
@@ -155,14 +166,14 @@
                     </article>
 
                     <article class="portfolio-card portfolio-card-video reveal-up" data-category="longform" data-type="video" data-video="BNxrlVX93dE" data-youtube-url="https://www.youtube.com/watch?v=BNxrlVX93dE" style="--delay: 240ms;">
-                        <img src="https://i.ytimg.com/vi/BNxrlVX93dE/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/BNxrlVX93dE/hqdefault.jpg" alt="Long form editing project 2" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/BNxrlVX93dE/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/BNxrlVX93dE/hqdefault.jpg" alt="Long form editing project 2" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Play long form project 2"></button>
                         <div class="card-media-actions">
                             <button class="portfolio-media-btn" type="button" data-action="play" aria-label="Play video">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
                             </button>
                             <a class="portfolio-media-btn" href="https://www.youtube.com/watch?v=BNxrlVX93dE" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-youtube"/></svg>
                             </a>
                         </div>
                         <div class="card-info">
@@ -172,14 +183,14 @@
 
                     <!-- Short Form -->
                     <article class="portfolio-card portfolio-card-video reveal-up" data-category="shortform" data-type="video" data-video="4JeswCTxxtE" data-youtube-url="https://www.youtube.com/shorts/4JeswCTxxtE" style="--delay: 320ms;">
-                        <img src="https://i.ytimg.com/vi/4JeswCTxxtE/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/4JeswCTxxtE/hqdefault.jpg" alt="Short form editing project 1" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/4JeswCTxxtE/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/4JeswCTxxtE/hqdefault.jpg" alt="Short form editing project 1" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Play short form project 1"></button>
                         <div class="card-media-actions">
                             <button class="portfolio-media-btn" type="button" data-action="play" aria-label="Play video">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
                             </button>
                             <a class="portfolio-media-btn" href="https://www.youtube.com/shorts/4JeswCTxxtE" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-youtube"/></svg>
                             </a>
                         </div>
                         <div class="card-info">
@@ -189,14 +200,14 @@
 
                     <!-- Assignments -->
                     <article class="portfolio-card portfolio-card-video reveal-up" data-category="assignment" data-type="video" data-video="yrIh10PiusM" data-youtube-url="https://www.youtube.com/watch?v=yrIh10PiusM" style="--delay: 320ms;">
-                        <img src="https://i.ytimg.com/vi/yrIh10PiusM/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/yrIh10PiusM/hqdefault.jpg" alt="Editing Skool assignment 1" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/yrIh10PiusM/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/yrIh10PiusM/hqdefault.jpg" alt="Editing Skool assignment 1" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Play Editing Skool assignment 1"></button>
                         <div class="card-media-actions">
                             <button class="portfolio-media-btn" type="button" data-action="play" aria-label="Play video">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
                             </button>
                             <a class="portfolio-media-btn" href="https://www.youtube.com/watch?v=yrIh10PiusM" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-youtube"/></svg>
                             </a>
                         </div>
                         <div class="card-info">
@@ -205,14 +216,14 @@
                     </article>
 
                     <article class="portfolio-card portfolio-card-video reveal-up" data-category="assignment" data-type="video" data-video="CeoCKHxMIIg" data-youtube-url="https://www.youtube.com/shorts/CeoCKHxMIIg" style="--delay: 400ms;">
-                        <img src="https://i.ytimg.com/vi/CeoCKHxMIIg/hqdefault.jpg" alt="Editing Skool assignment 2" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/CeoCKHxMIIg/hqdefault.jpg" alt="Editing Skool assignment 2" loading="lazy" width="480" height="360">
                         <button class="card-hitbox" type="button" aria-label="Play Editing Skool assignment 2"></button>
                         <div class="card-media-actions">
                             <button class="portfolio-media-btn" type="button" data-action="play" aria-label="Play video">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
                             </button>
                             <a class="portfolio-media-btn" href="https://www.youtube.com/shorts/CeoCKHxMIIg" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.61 4.5 12 4.5 12 4.5s-5.61 0-7.48.58a2.98 2.98 0 0 0-2.1 2.11A31.8 31.8 0 0 0 2 12a31.8 31.8 0 0 0 .42 4.81 2.98 2.98 0 0 0 2.1 2.11c1.87.58 7.48.58 7.48.58s5.61 0 7.48-.58a2.98 2.98 0 0 0 2.1-2.11A31.8 31.8 0 0 0 22 12a31.8 31.8 0 0 0-.42-4.81zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-youtube"/></svg>
                             </a>
                         </div>
                         <div class="card-info">
@@ -222,10 +233,10 @@
 
                     <!-- Thumbnails -->
                     <article class="portfolio-card portfolio-card-thumb reveal-up" data-category="thumbnails" data-type="image" data-image-src="assets/images/Thumbnails/t (1).png" style="--delay: 480ms;">
-                        <img src="assets/images/Thumbnails/t (1).png" data-fallback="assets/images/Thumbnails/t (1).jpg" alt="Thumbnail sample 1" loading="lazy">
+                        <img src="assets/images/Thumbnails/t (1).png" data-fallback="assets/images/Thumbnails/t (1).jpg" alt="Thumbnail sample 1" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Open thumbnail 1"></button>
                         <button class="thumb-zoom" type="button" aria-label="Zoom thumbnail">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 22l2-2zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14zm-1-7h2v2h2v2h-2v2h-2v-2h-2V9h2z"/></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>
                         </button>
                         <div class="card-info">
                             <p class="card-tag">Thumbnail</p>
@@ -233,10 +244,10 @@
                     </article>
 
                     <article class="portfolio-card portfolio-card-thumb reveal-up" data-category="thumbnails" data-type="image" data-image-src="assets/images/Thumbnails/t (2).png" style="--delay: 560ms;">
-                        <img src="assets/images/Thumbnails/t (2).png" data-fallback="assets/images/Thumbnails/t (2).jpg" alt="Thumbnail sample 2" loading="lazy">
+                        <img src="assets/images/Thumbnails/t (2).png" data-fallback="assets/images/Thumbnails/t (2).jpg" alt="Thumbnail sample 2" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Open thumbnail 2"></button>
                         <button class="thumb-zoom" type="button" aria-label="Zoom thumbnail">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 22l2-2zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14zm-1-7h2v2h2v2h-2v2h-2v-2h-2V9h2z"/></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>
                         </button>
                         <div class="card-info">
                             <p class="card-tag">Thumbnail</p>
@@ -244,10 +255,10 @@
                     </article>
 
                     <article class="portfolio-card portfolio-card-thumb reveal-up" data-category="thumbnails" data-type="image" data-image-src="assets/images/Thumbnails/t (3).png" style="--delay: 640ms;">
-                        <img src="assets/images/Thumbnails/t (3).png" data-fallback="assets/images/Thumbnails/t (3).jpg" alt="Thumbnail sample 3" loading="lazy">
+                        <img src="assets/images/Thumbnails/t (3).png" data-fallback="assets/images/Thumbnails/t (3).jpg" alt="Thumbnail sample 3" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Open thumbnail 3"></button>
                         <button class="thumb-zoom" type="button" aria-label="Zoom thumbnail">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 22l2-2zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14zm-1-7h2v2h2v2h-2v2h-2v-2h-2V9h2z"/></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>
                         </button>
                         <div class="card-info">
                             <p class="card-tag">Thumbnail</p>
@@ -255,10 +266,10 @@
                     </article>
 
                     <article class="portfolio-card portfolio-card-thumb reveal-up" data-category="thumbnails" data-type="image" data-image-src="assets/images/Thumbnails/t (4).png" style="--delay: 720ms;">
-                        <img src="assets/images/Thumbnails/t (4).png" alt="Thumbnail sample 4" loading="lazy">
+                        <img src="assets/images/Thumbnails/t (4).png" alt="Thumbnail sample 4" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Open thumbnail 4"></button>
                         <button class="thumb-zoom" type="button" aria-label="Zoom thumbnail">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 22l2-2zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14zm-1-7h2v2h2v2h-2v2h-2v-2h-2V9h2z"/></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>
                         </button>
                         <div class="card-info">
                             <p class="card-tag">Thumbnail</p>
@@ -266,10 +277,10 @@
                     </article>
 
                     <article class="portfolio-card portfolio-card-thumb reveal-up" data-category="thumbnails" data-type="image" data-image-src="assets/images/Thumbnails/t (5).png" style="--delay: 800ms;">
-                        <img src="assets/images/Thumbnails/t (5).png" alt="Thumbnail sample 5" loading="lazy">
+                        <img src="assets/images/Thumbnails/t (5).png" alt="Thumbnail sample 5" loading="lazy" width="1280" height="720">
                         <button class="card-hitbox" type="button" aria-label="Open thumbnail 5"></button>
                         <button class="thumb-zoom" type="button" aria-label="Zoom thumbnail">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 22l2-2zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14zm-1-7h2v2h2v2h-2v2h-2v-2h-2V9h2z"/></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>
                         </button>
                         <div class="card-info">
                             <p class="card-tag">Thumbnail</p>
@@ -286,22 +297,64 @@
                 <h2 class="reveal-up">What I offer</h2>
                 <div class="service-grid">
                     <article class="service-card reveal-up">
-                        <div class="service-icon">📖</div>
-                        <h3>Storytelling</h3>
+                        <div class="service-icon" aria-hidden="true">🎬</div>
+                        <h3>Long-Form Editing</h3>
+                        <p>YouTube videos, documentaries, podcasts, and other long-form content edited with strong storytelling and pacing.</p>
                     </article>
                     <article class="service-card reveal-up" style="--delay: 80ms;">
-                        <div class="service-icon">🎬</div>
-                        <h3>Long-Form</h3>
+                        <div class="service-icon" aria-hidden="true">⚡</div>
+                        <h3>Short-Form Editing</h3>
+                        <p>Engaging Shorts, Reels, and social content designed to capture attention quickly.</p>
                     </article>
                     <article class="service-card reveal-up" style="--delay: 160ms;">
-                        <div class="service-icon">⚡</div>
-                        <h3>Short-Form</h3>
+                        <div class="service-icon" aria-hidden="true">📖</div>
+                        <h3>Motion Graphics &amp; Storytelling</h3>
+                        <p>Purposeful visuals and motion that improve clarity and make the content more engaging.</p>
                     </article>
                     <article class="service-card reveal-up" style="--delay: 240ms;">
-                        <div class="service-icon">♻️</div>
-                        <h3>Repurposing</h3>
+                        <div class="service-icon" aria-hidden="true">♻️</div>
+                        <h3>Content Repurposing</h3>
+                        <p>Turning longer content into multiple short-form pieces so one edit works across platforms.</p>
                     </article>
                 </div>
+            </div>
+        </section>
+
+        <!-- How I Work Section -->
+        <section id="process" class="section-pad section-alt">
+            <div class="container">
+                <p class="eyebrow reveal-up">How I Work</p>
+                <h2 class="reveal-up">A simple process, start to finish.</h2>
+                <ol class="process-list" role="list">
+                    <li class="process-step reveal-up">
+                        <span class="process-num" aria-hidden="true">01</span>
+                        <div class="process-body">
+                            <h3>Tell me about your project</h3>
+                            <p>Share your footage, goals, and what you want the content to achieve.</p>
+                        </div>
+                    </li>
+                    <li class="process-step reveal-up" style="--delay: 80ms;">
+                        <span class="process-num" aria-hidden="true">02</span>
+                        <div class="process-body">
+                            <h3>I build the edit</h3>
+                            <p>I focus on storytelling, pacing, visuals, motion, and sound.</p>
+                        </div>
+                    </li>
+                    <li class="process-step reveal-up" style="--delay: 160ms;">
+                        <span class="process-num" aria-hidden="true">03</span>
+                        <div class="process-body">
+                            <h3>Review &amp; refine</h3>
+                            <p>You share feedback and I make the necessary refinements.</p>
+                        </div>
+                    </li>
+                    <li class="process-step reveal-up" style="--delay: 240ms;">
+                        <span class="process-num" aria-hidden="true">04</span>
+                        <div class="process-body">
+                            <h3>Ready to publish</h3>
+                            <p>You receive the final video ready for your platform.</p>
+                        </div>
+                    </li>
+                </ol>
             </div>
         </section>
 
@@ -310,40 +363,40 @@
             <div class="container split-grid">
                 <div class="about-copy reveal-up">
                     <p class="eyebrow">About</p>
-                    <h2>Every second earns attention.</h2>
+                    <h2>Hi, I'm Aaditya.</h2>
                     <p>
-                        I believe editing is not just about cutting footage — it's about sculpting time. 
-                        Every frame, every transition, every beat is calculated to keep viewers locked in 
+                        I'm Aaditya — a freelance video editor with 4+ years of experience,
+                        focused on storytelling, pacing, and motion design across long-form and short-form content.
+                        Every frame, every transition, every beat is shaped to keep viewers locked in
                         and coming back for more.
                     </p>
                     <div class="stat-row">
                         <div class="stat-item">
                             <strong>4+</strong>
-                            <span>Years</span>
+                            <span>Years of editing experience</span>
                         </div>
                         <div class="stat-item">
                             <strong>50+</strong>
-                            <span>Projects</span>
+                            <span>Projects completed</span>
                         </div>
                         <div class="stat-item">
-                            <strong>24h</strong>
-                            <span>Response time</span>
+                            <strong>Long + Short</strong>
+                            <span>Form content</span>
                         </div>
                     </div>
                 </div>
 
                 <article class="certificate-card reveal-up" style="--delay: 120ms;">
                     <div class="certificate-preview">
-                        <img src="assets/certifications/certificate.png" alt="Editing Skool certificate screenshot" loading="lazy">
+                        <img src="assets/certifications/certificate.png" alt="Editing Skool certificate screenshot" loading="lazy" width="1600" height="1000">
                     </div>
                     <div class="certificate-meta">
                         <p class="card-tag">Editing Skool</p>
                         <h3>Editing Master Class Completion</h3>
                         <div class="certificate-actions">
-                            <a class="btn-link" href="assets/certifications/editing%20skool%20certificate.pdf" target="_blank" rel="noopener noreferrer">View certificate</a>
-                            <a id="resumeDownload" class="btn-link" href="assets/documents/resume.pdf" download>Download resume</a>
+                            <a class="btn-link" id="certViewLink" href="assets/certifications/editing%20skool%20certificate.pdf" target="_blank" rel="noopener noreferrer">View in browser</a>
+                            <a class="btn-link" href="assets/certifications/editing%20skool%20certificate.pdf" download>Download PDF</a>
                         </div>
-                        <p id="resumeHint" class="small-hint" aria-live="polite"></p>
                     </div>
                 </article>
             </div>
@@ -352,13 +405,28 @@
         <!-- Contact Section -->
         <section id="contact" class="section-pad">
             <div class="container">
-                <div class="contact-panel reveal-up">
-                    <div>
+                <div class="contact-panel">
+                    <div class="contact-intro reveal-up">
                         <p class="eyebrow">Work together</p>
-                        <h2>Let's create</h2>
-                        <p>Ready to transform your footage into stories that stick? Let's talk about your next project.</p>
+                        <h2>Have a project in mind?</h2>
+                        <p>Tell me what you're working on, and I'll get back to you within 24 hours.</p>
+                        <p class="contact-microcopy">No forms to fill, no calls required — just describe the project.</p>
                     </div>
-                    <div class="social-links" aria-label="Social links">
+                    <form class="contact-form reveal-up" style="--delay: 120ms;" id="contactForm" action="https://forms.un-static.com/forms/25b56cf24c1e44f94246cb392a25fcd100b11d93" method="POST" target="_blank" novalidate>
+                        <label>Name
+                            <input type="text" name="name" autocomplete="name" required>
+                        </label>
+                        <label>Email
+                            <input type="email" name="email" autocomplete="email" required>
+                        </label>
+                        <label>Message
+                            <textarea name="message" required></textarea>
+                        </label>
+                        <button class="btn btn-primary" id="contactSubmit" type="submit">Send Message</button>
+                        <p class="form-status" id="contactStatus" role="status" aria-live="polite" aria-atomic="true"></p>
+                    </form>
+                    <div class="social-links reveal-up" style="--delay: 220ms;" aria-label="Social links">
+                        <p class="social-links-title">Or connect here</p>
                         <a href="https://www.instagram.com/notmediocreeditzz/" target="_blank" rel="noopener noreferrer">
                             <span>Instagram</span>
                         </a>
