@@ -92,7 +92,7 @@
     document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
         anchor.addEventListener("click", function (e) {
             const targetId = this.getAttribute("href");
-            if (targetId === "#top") return;
+            if (targetId === "#top" || targetId === "#main") return;
 
             const target = document.querySelector(targetId);
             if (target) {

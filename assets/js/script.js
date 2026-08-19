@@ -6,6 +6,26 @@
 (function () {
     "use strict";
 
+    // ===== Reduced Motion Preference =====
+    const allowMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ===== Background Region Isolation (inert) =====
+    const BG_ALL = [".site-header", "#main", ".site-footer"];
+    const BG_MENU = ["#main", ".site-footer"];
+
+    function setRegionInert(selectors, inert) {
+        selectors.forEach(function (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                if (inert) {
+                    el.setAttribute("inert", "");
+                } else {
+                    el.removeAttribute("inert");
+                }
+            }
+        });
+    }
+
     // ===== Mobile Menu =====
     const menuToggle = document.getElementById("menuToggle");
     const mobileMenu = document.getElementById("mobileMenu");
@@ -15,6 +35,7 @@
             const isOpen = mobileMenu.classList.toggle("open");
             menuToggle.setAttribute("aria-expanded", String(isOpen));
             document.body.style.overflow = isOpen ? "hidden" : "";
+            setRegionInert(BG_MENU, isOpen);
         });
 
         mobileMenu.querySelectorAll("a[href^='#']").forEach(function (link) {
@@ -22,6 +43,7 @@
                 mobileMenu.classList.remove("open");
                 menuToggle.setAttribute("aria-expanded", "false");
                 document.body.style.overflow = "";
+                setRegionInert(BG_MENU, false);
             });
         });
     }
@@ -62,16 +84,20 @@
 
         filterButtons.forEach(function (btn) {
             btn.classList.remove("active");
+            btn.setAttribute("aria-pressed", "false");
         });
         initiallyActive.classList.add("active");
+        initiallyActive.setAttribute("aria-pressed", "true");
         applyFilter(initiallyActive.getAttribute("data-filter"));
 
         filterButtons.forEach(function (button) {
             button.addEventListener("click", function () {
                 filterButtons.forEach(function (btn) {
                     btn.classList.remove("active");
+                    btn.setAttribute("aria-pressed", "false");
                 });
                 button.classList.add("active");
+                button.setAttribute("aria-pressed", "true");
                 applyFilter(button.getAttribute("data-filter"));
             });
         });
@@ -100,6 +126,7 @@
         mediaModal.classList.add("open");
         mediaModal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
+        setRegionInert(BG_ALL, true);
 
         // Fade in image after modal opens
         requestAnimationFrame(function () {
@@ -114,14 +141,14 @@
         }
     }
 
-    function openModalWithVideo(videoId) {
+    function openModalWithVideo(videoId, title) {
         if (!mediaModal || !mediaModalContent || !videoId) return;
 
         currentFocus = document.activeElement;
 
         const iframe = document.createElement("iframe");
         iframe.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&rel=0&modestbranding=1";
-        iframe.title = "Portfolio video";
+        iframe.title = title || "Portfolio video";
         iframe.allow = "autoplay; encrypted-media; fullscreen; picture-in-picture";
         iframe.setAttribute("allowfullscreen", "true");
         iframe.style.opacity = "0";
@@ -133,6 +160,7 @@
         mediaModal.classList.add("open");
         mediaModal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
+        setRegionInert(BG_ALL, true);
 
         requestAnimationFrame(function () {
             iframe.style.opacity = "1";
@@ -151,6 +179,7 @@
         mediaModal.classList.remove("open");
         mediaModal.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
+        setRegionInert(BG_ALL, false);
 
         // Clear content after transition
         setTimeout(function () {
@@ -177,10 +206,41 @@
     }
 
     document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape" && mediaModal.classList.contains("open")) {
-            closeMediaModal();
+        if (event.key === "Escape") {
+            if (mediaModal.classList.contains("open")) {
+                closeMediaModal();
+            } else if (mobileMenu && mobileMenu.classList.contains("open")) {
+                mobileMenu.classList.remove("open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                document.body.style.overflow = "";
+                setRegionInert(BG_MENU, false);
+                menuToggle.focus();
+            }
         }
     });
+
+    // ===== Modal Focus Trap =====
+    if (mediaModal) {
+        mediaModal.addEventListener("keydown", function (event) {
+            if (event.key !== "Tab") return;
+
+            const focusables = mediaModal.querySelectorAll(
+                'button:not([disabled]), a[href], iframe, [tabindex]:not([tabindex="-1"])'
+            );
+            if (focusables.length === 0) return;
+
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        });
+    }
 
     // ===== Portfolio Card Interactions =====
     portfolioCards.forEach(function (card) {
@@ -188,12 +248,14 @@
         const videoId = card.getAttribute("data-video");
         const imageSrc = card.getAttribute("data-image-src") || card.querySelector("img")?.getAttribute("src");
         const imageAlt = card.querySelector("img")?.getAttribute("alt") || "Portfolio item";
+        const titleEl = card.querySelector(".card-title");
+        const cardTitle = titleEl ? titleEl.textContent.trim() : "";
 
         const cardHitbox = card.querySelector(".card-hitbox");
         if (cardHitbox) {
             cardHitbox.addEventListener("click", function () {
                 if (mediaType === "video") {
-                    openModalWithVideo(videoId);
+                    openModalWithVideo(videoId, cardTitle);
                 } else {
                     openModalWithImage(imageSrc, imageAlt);
                 }
@@ -204,7 +266,7 @@
         if (playButton) {
             playButton.addEventListener("click", function (event) {
                 event.stopPropagation();
-                openModalWithVideo(videoId);
+                openModalWithVideo(videoId, cardTitle);
             });
         }
 
@@ -236,28 +298,29 @@
     // ===== Magnetic Button Effect (subtle) =====
     const magneticButtons = document.querySelectorAll(".btn, .portfolio-media-btn, .thumb-zoom");
 
-    magneticButtons.forEach(function (btn) {
-        btn.addEventListener("mousemove", function (e) {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
+    if (magneticButtons.length > 0 && allowMotion) {
+        magneticButtons.forEach(function (btn) {
+            btn.addEventListener("mousemove", function (e) {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
 
-            // Subtle magnetic pull (max 4px)
-            const maxPull = 4;
-            const pullX = (x / rect.width) * maxPull;
-            const pullY = (y / rect.height) * maxPull;
+                // Subtle magnetic pull (max 4px)
+                const maxPull = 4;
+                const pullX = (x / rect.width) * maxPull;
+                const pullY = (y / rect.height) * maxPull;
 
-            btn.style.transform = "translate(" + pullX + "px, " + pullY + "px)";
+                btn.style.transform = "translate(" + pullX + "px, " + pullY + "px)";
+            });
+
+            btn.addEventListener("mouseleave", function () {
+                btn.style.transform = "";
+            });
         });
-
-        btn.addEventListener("mouseleave", function () {
-            btn.style.transform = "";
-        });
-    });
+    }
 
     // ===== Scroll Parallax Layers =====
     const parallaxLayers = Array.from(document.querySelectorAll(".parallax-layer"));
-    const allowMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (parallaxLayers.length > 0 && allowMotion) {
         let tickingParallax = false;

@@ -50,7 +50,7 @@
 
     --text-primary: hsl(40, 20%, 96%);    /* #f5f3ef */
     --text-secondary: hsl(40, 10%, 68%);  /* #b5b0a6 */
-    --text-tertiary: hsl(40, 8%, 48%);    /* #837d73 */
+    --text-tertiary: hsl(40, 8%, 55%);    /* #948e84 */
 
     --accent: hsl(var(--hue-accent), 88%, 58%);
     --accent-dim: hsl(var(--hue-accent), 60%, 45%);
@@ -100,7 +100,6 @@
     --font-sans: "Inter", system-ui, -apple-system, sans-serif;
     --font-heading: "Outfit", var(--font-sans);
     --font-display: "Playfair Display", Georgia, serif;
-    --font-italic: "Crimson Text", Georgia, serif;
 }
 
 /* ---------- Reset & Base ---------- */
@@ -727,7 +726,7 @@ p {
 .filter-btn.active::before {
     content: "";
     position: absolute;
-    bottom: -calc(var(--u-4) + 1px);
+    bottom: calc((var(--u-4) + 1px) * -1);
     left: 50%;
     transform: translateX(-50%);
     width: var(--u-2);
@@ -818,7 +817,9 @@ p {
 }
 
 .portfolio-card:hover .card-media-actions,
-.portfolio-card:hover .thumb-zoom {
+.portfolio-card:hover .thumb-zoom,
+.portfolio-card:focus-within .card-media-actions,
+.portfolio-card:focus-within .thumb-zoom {
     opacity: 1;
     transform: translateY(0);
 }
@@ -865,6 +866,8 @@ p {
     border-top: 1.5px solid var(--border);
     background: var(--bg-surface);
     z-index: 2;
+    display: grid;
+    gap: var(--u-0-5);
 }
 
 .card-tag {
@@ -874,6 +877,34 @@ p {
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-tertiary);
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin: 0;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+}
+
+.card-skills {
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--text-tertiary);
+    margin: 0;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+}
+
+.portfolio-card:hover .card-title,
+.portfolio-card:focus-within .card-title {
+    color: var(--accent);
+}
+
+.portfolio-card:hover .card-skills,
+.portfolio-card:focus-within .card-skills {
+    color: var(--text-secondary);
 }
 
 /* ---------- Services ---------- */
@@ -1401,6 +1432,7 @@ p {
 
     .nav-links.open {
         display: flex;
+        animation: nav-drop var(--duration-slower) var(--ease-out-expo);
     }
 
     .nav-links a {
