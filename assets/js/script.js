@@ -49,8 +49,12 @@
     }
 
     // ===== Portfolio Filtering =====
+    // Filtering applies to the main Work grid only (#portfolioGrid).
+    // The "Also offering" thumbnail strip reuses .portfolio-card markup
+    // but must never be filtered/hidden, so it stays out of this list.
     const filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
-    const portfolioCards = Array.from(document.querySelectorAll(".portfolio-card"));
+    const portfolioCards = Array.from(document.querySelectorAll("#portfolioGrid .portfolio-card"));
+    const allPortfolioCards = Array.from(document.querySelectorAll(".portfolio-card"));
 
     function applyFilter(filterValue) {
         let visibleIndex = 0;
@@ -243,7 +247,7 @@
     }
 
     // ===== Portfolio Card Interactions =====
-    portfolioCards.forEach(function (card) {
+    allPortfolioCards.forEach(function (card) {
         const mediaType = card.getAttribute("data-type");
         const videoId = card.getAttribute("data-video");
         const imageSrc = card.getAttribute("data-image-src") || card.querySelector("img")?.getAttribute("src");
@@ -288,6 +292,61 @@
             image.src = fallback;
         });
     });
+
+    // ===== Hover Preview Clips (video cards) =====
+    // On hover/focus, a muted autoplaying YouTube embed fades in over the
+    // thumbnail to give a taste of pacing without a click. Only enabled on
+    // devices that actually have hover (touch devices keep the static
+    // thumbnail) and only when the user hasn't asked for reduced motion.
+    // The iframe is pointer-events: none and sits under the card hitbox,
+    // so a click still opens the in-page modal.
+    const hoverCapable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    if (hoverCapable && allowMotion) {
+        const videoCards = allPortfolioCards.filter(function (card) {
+            return card.getAttribute("data-type") === "video";
+        });
+
+        videoCards.forEach(function (card) {
+            const videoId = card.getAttribute("data-video");
+            if (!videoId) return;
+
+            let previewFrame = null;
+
+            function getPreviewFrame() {
+                if (!previewFrame) {
+                    previewFrame = document.createElement("iframe");
+                    previewFrame.className = "card-preview";
+                    previewFrame.title = "Video preview";
+                    previewFrame.setAttribute("tabindex", "-1");
+                    previewFrame.setAttribute("aria-hidden", "true");
+                    previewFrame.setAttribute("allow", "autoplay; encrypted-media");
+                    previewFrame.src = "https://www.youtube.com/embed/" + videoId +
+                        "?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&loop=1&playlist=" + videoId;
+                }
+                return previewFrame;
+            }
+
+            function showPreview() {
+                if (!card.querySelector(".card-preview")) {
+                    card.appendChild(getPreviewFrame());
+                    card.classList.add("is-previewing");
+                }
+            }
+
+            function hidePreview() {
+                card.classList.remove("is-previewing");
+                if (previewFrame) {
+                    previewFrame.remove();
+                }
+            }
+
+            card.addEventListener("mouseenter", showPreview);
+            card.addEventListener("mouseleave", hidePreview);
+            card.addEventListener("focusin", showPreview);
+            card.addEventListener("focusout", hidePreview);
+        });
+    }
 
     // ===== Dynamic Year =====
     const yearNode = document.getElementById("year");
@@ -408,6 +467,36 @@
         } else {
             visible = true;
             ensureRunning();
+        }
+    }
+
+    // ===== Hero Showreel =====
+    // Fades the hero <video> in over the poster photo only once it is
+    // actually playable. Removes the element entirely for reduced-motion
+    // users or if the showreel file is missing (leaving the photo frame).
+    const heroVideo = document.querySelector(".hero-video");
+
+    if (heroVideo) {
+        if (!allowMotion) {
+            heroVideo.remove();
+        } else {
+            heroVideo.setAttribute("autoplay", "");
+
+            function heroVideoReady() {
+                heroVideo.classList.add("is-ready");
+            }
+
+            function heroVideoFailed() {
+                heroVideo.remove();
+            }
+
+            heroVideo.addEventListener("canplay", heroVideoReady);
+            heroVideo.addEventListener("error", heroVideoFailed);
+
+            const playPromise = heroVideo.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+                playPromise.catch(heroVideoFailed);
+            }
         }
     }
 })();
