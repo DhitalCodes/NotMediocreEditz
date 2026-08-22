@@ -450,7 +450,7 @@ p {
     letter-spacing: 0.01em;
     border: 1.5px solid transparent;
     cursor: pointer;
-    transition: transform var(--duration-fast) var(--ease-out-back),
+    transition: transform var(--duration-base) var(--ease-out-quart),
                 box-shadow var(--duration-base) var(--ease-out-quart),
                 background var(--duration-fast) var(--ease-out-quart);
     position: relative;

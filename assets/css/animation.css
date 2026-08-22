@@ -1,34 +1,48 @@
 /* =========================================================
-   ANIMATIONS — Mathematical Easing & Timing
-   Based on: Custom cubic-bezier curves for premium feel
+   ANIMATIONS — Smooth Ease In / Ease Out Motion
+   Every segment animates with a symmetric ease-in-out curve
+   (cubic-bezier(0.65, 0, 0.35, 1)) so nothing snaps or lags.
    ========================================================= */
 
-/* Float In — Hero card entrance */
-@keyframes floatIn {
-    from {
-        opacity: 0;
-        transform: translateY(24px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Reveal Up — Scroll-triggered reveals */
+/* Reveal Up — Scroll-triggered reveals (ease in AND ease out) */
 .reveal-up {
     opacity: 0;
     transform: translateY(30px);
-    transition: 
-        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+        opacity 700ms cubic-bezier(0.65, 0, 0.35, 1),
+        transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
     transition-delay: var(--delay, 0ms);
     will-change: opacity, transform;
 }
 
+/* Settled state — compositor layer is released once the reveal has played */
 .reveal-up.in-view {
     opacity: 1;
     transform: translateY(0);
+    will-change: auto;
+}
+
+/* Hero card: keeps its tilt composition as the settled transform and
+   reveals as a smooth fade. The transform transition stays short so
+   the JS-driven tilt follows the cursor without lagging behind it. */
+.reveal-up.hero-card {
+    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(var(--tilt-lift, 0px));
+    transition:
+        opacity 900ms cubic-bezier(0.65, 0, 0.35, 1),
+        transform 160ms cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 400ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.reveal-up.hero-card.in-view {
+    opacity: 1;
+    will-change: auto;
+}
+
+/* Fade out state used by the portfolio filter — outgoing cards ease
+   out before the grid swaps, incoming cards ease back in */
+.is-fading {
+    opacity: 0 !important;
+    transform: translateY(10px) scale(0.98) !important;
 }
 
 /* Stagger children with mathematical delay */
@@ -38,12 +52,6 @@
 .reveal-up:nth-child(4) { --delay: 240ms; }
 .reveal-up:nth-child(5) { --delay: 320ms; }
 .reveal-up:nth-child(6) { --delay: 400ms; }
-
-/* Hero card specific */
-.hero-card {
-    animation: floatIn 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 200ms;
-}
 
 /* Nav Drop — Mobile menu entrance */
 @keyframes nav-drop {

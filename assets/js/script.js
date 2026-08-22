@@ -55,29 +55,76 @@
     const filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
     const portfolioCards = Array.from(document.querySelectorAll("#portfolioGrid .portfolio-card"));
     const allPortfolioCards = Array.from(document.querySelectorAll(".portfolio-card"));
+    const portfolioGrid = document.getElementById("portfolioGrid");
 
-    function applyFilter(filterValue) {
-        let visibleIndex = 0;
+    const FILTER_FADE_MS = 220;
+    let activeFilter = null;
+    let filterTimer = null;
+    let filterInitialized = false;
 
-        portfolioCards.forEach(function (card) {
-            const category = card.getAttribute("data-category");
-            const shouldShow = category === filterValue;
+    function applyFilter(filterValue, animate) {
+        if (animate && filterValue === activeFilter && filterInitialized) return;
 
-            if (shouldShow) {
-                card.classList.remove("is-hidden");
-                // Reset stagger delay based on visible position
-                card.style.setProperty("--delay", (visibleIndex * 80) + "ms");
-                card.classList.remove("in-view");
-                visibleIndex++;
-            } else {
-                card.classList.add("is-hidden");
-            }
+        const outgoing = portfolioCards.filter(function (card) {
+            return card.getAttribute("data-category") !== filterValue &&
+                   !card.classList.contains("is-hidden");
         });
 
-        // Trigger refresh for scroll animations
-        setTimeout(function () {
+        if (filterTimer) {
+            clearTimeout(filterTimer);
+            filterTimer = null;
+        }
+
+        if (!animate) {
+            // Initial load: hide non-matching cards immediately and let the
+            // scroll observer reveal the matching ones naturally.
+            let visibleIndex = 0;
+            portfolioCards.forEach(function (card) {
+                const shouldShow = card.getAttribute("data-category") === filterValue;
+                card.classList.remove("is-fading");
+                card.classList.remove("in-view");
+                card.classList.toggle("is-hidden", !shouldShow);
+                card.style.setProperty("--delay", shouldShow ? (visibleIndex * 80) + "ms" : "0ms");
+                if (shouldShow) visibleIndex++;
+            });
             document.dispatchEvent(new Event("sections:refresh"));
-        }, 50);
+            return;
+        }
+
+        // Phase 1 — ease the outgoing cards out.
+        outgoing.forEach(function (card) {
+            card.style.setProperty("--delay", "0ms");
+            card.classList.add("is-fading");
+        });
+
+        // Phase 2 — swap visibility and ease the incoming cards back in.
+        filterTimer = setTimeout(function () {
+            let visibleIndex = 0;
+            portfolioCards.forEach(function (card) {
+                const shouldShow = card.getAttribute("data-category") === filterValue;
+                card.classList.remove("is-fading");
+                card.style.setProperty("--delay", shouldShow ? (visibleIndex * 80) + "ms" : "0ms");
+                card.classList.toggle("is-hidden", !shouldShow);
+                card.classList.remove("in-view");
+                if (shouldShow) visibleIndex++;
+            });
+
+            // Force a reflow so the entrance transition starts from the
+            // hidden state instead of popping in.
+            if (portfolioGrid) void portfolioGrid.offsetWidth;
+
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    portfolioCards.forEach(function (card) {
+                        if (!card.classList.contains("is-hidden")) {
+                            card.classList.add("in-view");
+                        }
+                    });
+                });
+            });
+
+            document.dispatchEvent(new Event("sections:refresh"));
+        }, FILTER_FADE_MS);
     }
 
     if (filterButtons.length > 0) {
@@ -92,7 +139,9 @@
         });
         initiallyActive.classList.add("active");
         initiallyActive.setAttribute("aria-pressed", "true");
-        applyFilter(initiallyActive.getAttribute("data-filter"));
+        activeFilter = initiallyActive.getAttribute("data-filter");
+        applyFilter(activeFilter, false);
+        filterInitialized = true;
 
         filterButtons.forEach(function (button) {
             button.addEventListener("click", function () {
@@ -102,7 +151,8 @@
                 });
                 button.classList.add("active");
                 button.setAttribute("aria-pressed", "true");
-                applyFilter(button.getAttribute("data-filter"));
+                activeFilter = button.getAttribute("data-filter");
+                applyFilter(activeFilter, true);
             });
         });
     }
@@ -379,30 +429,38 @@
     }
 
     // ===== Scroll Parallax Layers =====
+    // Scroll position is eased toward the target each frame so the layers
+    // glide smoothly instead of jittering 1:1 with the scrollbar.
     const parallaxLayers = Array.from(document.querySelectorAll(".parallax-layer"));
 
     if (parallaxLayers.length > 0 && allowMotion) {
-        let tickingParallax = false;
+        let targetScroll = window.scrollY;
+        let currentScroll = window.scrollY;
+        let parallaxRaf = null;
 
-        function updateParallaxLayers() {
-            const scrollY = window.scrollY;
+        function tickParallax() {
+            currentScroll += (targetScroll - currentScroll) * 0.12;
 
             parallaxLayers.forEach(function (layer) {
                 const speed = Number(layer.getAttribute("data-speed")) || 0.08;
-                layer.style.transform = "translate3d(0, " + (scrollY * speed) + "px, 0)";
+                layer.style.transform = "translate3d(0, " + (currentScroll * speed) + "px, 0)";
             });
 
-            tickingParallax = false;
+            if (Math.abs(targetScroll - currentScroll) > 0.5) {
+                parallaxRaf = requestAnimationFrame(tickParallax);
+            } else {
+                parallaxRaf = null;
+            }
         }
 
         window.addEventListener("scroll", function () {
-            if (!tickingParallax) {
-                requestAnimationFrame(updateParallaxLayers);
-                tickingParallax = true;
+            targetScroll = window.scrollY;
+            if (parallaxRaf === null) {
+                parallaxRaf = requestAnimationFrame(tickParallax);
             }
-        });
+        }, { passive: true });
 
-        updateParallaxLayers();
+        tickParallax();
     }
 
     // ===== Parallax Effect for Hero Card =====

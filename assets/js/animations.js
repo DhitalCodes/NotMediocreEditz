@@ -9,9 +9,7 @@
     // Configuration based on visual perception research
     const CONFIG = {
         threshold: 0.15,        // 15% visibility triggers animation
-        rootMargin: "0px 0px -50px 0px",
-        staggerBase: 80,        // Base delay in ms (follows golden ratio progression)
-        staggerRatio: 1.3       // Approximation of sqrt(phi) for natural feel
+        rootMargin: "0px 0px -50px 0px"
     };
 
     const revealTargets = Array.from(document.querySelectorAll(".reveal-up"));
@@ -30,13 +28,8 @@
             entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
 
-                // Add small delay based on element position for natural stagger
-                const rect = entry.target.getBoundingClientRect();
-                const viewportHeight = window.innerHeight;
-                const position = rect.top / viewportHeight;
-                const delay = Math.min(position * 200, 400);
-
-                entry.target.style.transitionDelay = delay + "ms";
+                // Stagger comes from the CSS --delay variables; overriding
+                // transition-delay per element caused uneven, glitchy timing.
                 entry.target.classList.add("in-view");
                 observer.unobserve(entry.target);
             });
